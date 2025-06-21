@@ -1,0 +1,32 @@
+FROM python:3.10-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    git \
+    wget \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install PyTorch CPU version first (will be overridden on GPU)
+RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+
+# Install WhisperX
+RUN pip install git+https://github.com/m-bain/whisperx.git
+
+# Install other dependencies
+RUN pip install \
+    pyannote.audio \
+    transformers \
+    accelerate \
+    runpod \
+    fastapi \
+    uvicorn
+
+WORKDIR /app
+
+# Copy handler
+COPY handler.py /app/
+
+# RunPod handler
+CMD ["python", "-u", "handler.py"] 
