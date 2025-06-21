@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Replace 'yourusername' with your Docker Hub username
-DOCKER_USERNAME="yourusername"
+# Docker Hub configuration
+DOCKER_USERNAME="adlerlietz1993"
 IMAGE_NAME="whisperx-diarization"
 TAG="latest"
 

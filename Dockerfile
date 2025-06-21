@@ -18,6 +18,9 @@ RUN pip install --upgrade pip
 # Install PyTorch with CUDA support
 RUN pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu118
 
+# Install compatible NumPy version (before 2.0)
+RUN pip install numpy==1.24.3
+
 # Install WhisperX and dependencies
 RUN pip install git+https://github.com/m-bain/whisperx.git
 
@@ -34,11 +37,8 @@ RUN pip install runpod \
     python-multipart \
     requests
 
-# Download Whisper models ahead of time for faster startup
-RUN python3 -c "import whisper; whisper.load_model('base')"
-RUN python3 -c "import whisper; whisper.load_model('small')"
-RUN python3 -c "import whisper; whisper.load_model('medium')"
-RUN python3 -c "import whisper; whisper.load_model('large-v2')"
+# Models will be downloaded on first use
+# Skip pre-loading to avoid build issues
 
 # Create working directory
 WORKDIR /app
